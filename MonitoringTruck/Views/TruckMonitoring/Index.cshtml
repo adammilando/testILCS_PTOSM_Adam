@@ -1,0 +1,90 @@
+﻿@model Root
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Chart Data Truk yang Berkegiatan</h1>
+        </div>
+            
+        <div class="col-md-12">
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <div class="col-md-12">
+            <h2>Data Truk</h2>
+            <table id="truckTable" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Kode Truk</th>
+                        <th>Nopol</th>
+                        <th>No SPMK</th>
+                        <th>Tgl Gate In</th>
+                        <th>Tgl Gate Out</th>
+                        <th>Time (Gate Out - Gate In)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.result.data)
+                    {
+                        <tr>
+                            <td>@item.NO_JOB</td>
+                            <td>@item.PLAT_NO</td>
+                            <td>@item.NO_SPMK</td>
+                            <td>@item.GATE_IN_DATE</td>
+                            <td>@item.GATE_OUT_DATE</td>
+                            <td>@(item.GATE_OUT_DATE.HasValue && item.GATE_IN_DATE.HasValue ? (item.GATE_OUT_DATE.Value - item.GATE_IN_DATE.Value).TotalHours.ToString() : "N/A")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+            
+    </div>
+        
+</div>
+
+
+
+@section Scripts {
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+}
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#truckTable').DataTable();
+    });
+
+    const data = {
+        labels: ['Gate In', 'Di Dalam', 'Gate Out'],
+        datasets: [{
+            label: 'Data Truk yang Berkegiatan',
+            data: [@Model.result.data.Count(d => d.GATE_IN_DATE != null), @Model.result.data.Count(d => d.GATE_OUT_DATE == null && d.GATE_IN_DATE != null), @Model.result.data.Count(d => d.GATE_OUT_DATE != null)],
+            backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(75, 192, 192)'],
+        }]
+    };
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    window.onload = function () {
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, config);
+    }
+</script>
