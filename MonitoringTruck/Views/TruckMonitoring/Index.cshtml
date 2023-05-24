@@ -13,31 +13,36 @@
 
         <div class="col-md-12">
             <h2>Data Truk</h2>
-            <table id="truckTable" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Kode Truk</th>
-                        <th>Nopol</th>
-                        <th>No SPMK</th>
-                        <th>Tgl Gate In</th>
-                        <th>Tgl Gate Out</th>
-                        <th>Time (Gate Out - Gate In)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.result.data)
-                    {
-                        <tr>
-                            <td>@item.NO_JOB</td>
-                            <td>@item.PLAT_NO</td>
-                            <td>@item.NO_SPMK</td>
-                            <td>@item.GATE_IN_DATE</td>
-                            <td>@item.GATE_OUT_DATE</td>
-                            <td>@(item.GATE_OUT_DATE.HasValue && item.GATE_IN_DATE.HasValue ? (item.GATE_OUT_DATE.Value - item.GATE_IN_DATE.Value).TotalHours.ToString() : "N/A")</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+            <div class="card">
+                <div class="card-body" style="overflow: scroll">
+                    <table id="truckTable" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Kode Truk</th>
+                                <th>Nopol</th>
+                                <th>No SPMK</th>
+                                <th>Tgl Gate In</th>
+                                <th>Tgl Gate Out</th>
+                                <th>Time (Gate Out - Gate In)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.result.data)
+                            {
+                                <tr>
+                                    <td>@item.NO_JOB</td>
+                                    <td>@item.PLAT_NO</td>
+                                    <td>@item.NO_SPMK</td>
+                                    <td>@item.GATE_IN_DATE</td>
+                                    <td>@item.GATE_OUT_DATE</td>
+                                    <td>@(item.GATE_OUT_DATE.HasValue && item.GATE_IN_DATE.HasValue ? (item.GATE_OUT_DATE.Value - item.GATE_IN_DATE.Value).TotalHours.ToString() : "N/A")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
         </div>
 
             
